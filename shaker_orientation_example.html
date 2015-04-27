@@ -14,22 +14,7 @@
     	
    		function initShaker()
     	{
-					shaker.on("tiltA",function(o){
-								document.getElementById("printout").innerHTML+="TILTA"+o.da+" "+o.oaccA+"<br/>";
-					});
-
-					shaker.on("tiltB",function(o){
-							console.log(o);
-							document.getElementById("printout").innerHTML+="TILTB"+o.db+" "+o.oaccB+"<br/>";
-					});
-
-					shaker.on("tiltG",function(o){
-								document.getElementById("printout").innerHTML+="TILTG"+o.dg+" "+o.oaccG+"<br/>";
-								// document.getElementById("printout").innerHTML+="# SHAKES: "+o.shakes+"\n"; /* Print out # shakes registered */
-					});
-					
 					 setInterval(updateCar, 30);
-
     	}
     	
     	function updateCar()
