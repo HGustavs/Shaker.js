@@ -6,21 +6,61 @@
     <script src="shaker.js"></script> 
 
     <script>
+    	
+    	var cx=0;
+    	var cy=0;
+    	var cv=0;
+    	var spd=1;
+    	
    		function initShaker()
     	{
 					shaker.on("tiltA",function(o){
-								document.getElementById("printout").innerHTML+="TILTA"+"<br/>";
+								document.getElementById("printout").innerHTML+="TILTA"+o.da+" "+o.oaccA+"<br/>";
 					});
 
 					shaker.on("tiltB",function(o){
-								document.getElementById("printout").innerHTML+="TILTB"+"<br/>";
+							console.log(o);
+							document.getElementById("printout").innerHTML+="TILTB"+o.db+" "+o.oaccB+"<br/>";
 					});
 
 					shaker.on("tiltG",function(o){
-								document.getElementById("printout").innerHTML+="TILTG"+"<br/>";
+								document.getElementById("printout").innerHTML+="TILTG"+o.dg+" "+o.oaccG+"<br/>";
 								// document.getElementById("printout").innerHTML+="# SHAKES: "+o.shakes+"\n"; /* Print out # shakes registered */
 					});
+					
+					 setInterval(updateCar, 30);
 
+    	}
+    	
+    	function updateCar()
+    	{
+    			cx+=Math.cos(cv)*spd;
+    			cy+=Math.sin(cv)*spd;
+    			cv+=shaker.getOrientation().oaccB*0.001;
+ 
+    			if(cx<-10) cx=500;
+    			if(cx>510) cx=0;
+    			if(cy<-10) cy=500;
+    			if(cy>510) cy=0;
+    	
+    			var div =document.getElementById("car");
+    			
+    			div.style.left=Math.round(cx);
+    			div.style.top=Math.round(cy);
+ 
+    			div.style.webkitTransform = 'rotate('+cv+'rad)'; 
+    			div.style.mozTransform    = 'rotate('+cv+'rad)'; 
+    			div.style.msTransform     = 'rotate('+cv+'rad)'; 
+    			div.style.oTransform      = 'rotate('+cv+'rad)'; 
+    			div.style.transform       = 'rotate('+cv+'rad)';
+    			 
+   				
+    	}
+    	
+    	// Reset calibration of angles
+    	function calibrate()
+    	{
+    			shaker.calibrateOrientation();
     	}
 
    	</script> 
@@ -29,7 +69,13 @@
 
 <body onload="initShaker();">
 		Test Page
+	<input type="button" onclick="calibrate();" />
 		<div id="printout" style="background:#fed;border:1px solid red;" />
+			
+		<div id="car" style="position:absolute;left:100 px;top:100 px;border:1px solid black;width:100px;height:50px;">
+				<img src="SuperCar.svg" style="transform-origin: 50% 50%;width:100px;height:50px;">
+		</div>
+	
 </body>
 
 </html>

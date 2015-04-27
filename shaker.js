@@ -118,16 +118,22 @@ THE SOFTWARE.
 				longitude:null,
 				positioncount:null,
 
-				// Shake Detection
+				// Shake Deltas
 				dx:null,
 				dy:null,
 				dz:null,
 				
-				// Orientation Detection
+				// Orientation Deltas
 				da:null,
 				db:null,
 				dg:null,
 				
+				// Orientation Accumilated
+				oaccA:0,
+				oaccB:0,
+				oaccD:0,			
+				
+				// Shake Data
 				shakes:null,
 				shakesX:null,
 				shakesY:null,
@@ -249,6 +255,12 @@ THE SOFTWARE.
 				}
 
 		}
+
+		shaker.calibrateOrientation = function() {
+				measurements.oaccA=0;
+				measurements.oaccB=0;
+				measurements.oaccD=0;
+		};
 
 		shaker.getOrientation = function() {
 				return measurements;
@@ -403,7 +415,16 @@ THE SOFTWARE.
 				
 				navigated=false;
 		};
+
 		
+		/********************************************************************************
+		   evalshake
+		   
+		   evalshake is called to evaluate if the last set of steps constitute a shake
+		   event or not.
+		   
+		*********************************************************************************/
+
 		function evalshake() {
 
 				var shaked=0;
@@ -513,18 +534,23 @@ THE SOFTWARE.
 						da=lastmeasure.alpha-measurements.alpha;
 						db=lastmeasure.beta-measurements.beta;
 						dg=lastmeasure.gamma-measurements.gamma;
+
+						measurements.da=da;
+						measurements.db=db;		
+						measurements.dg=dg;
+						
+						measurements.oaccA+=da;
+						measurements.oaccB+=db;
+						measurements.oaccG+=dg;
 						
 						if(Math.abs(da)>3){
 								if(tiltcallbackA!=null) tiltcallbackA(measurements);
-								measurements.shakeXcnt++;
 						}
 						if(Math.abs(db)>3){
 								if(tiltcallbackB!=null) tiltcallbackB(measurements);
-								measurements.shakeXcnt++;
 						}
 						if(Math.abs(dg)>3){
 								if(tiltcallbackG!=null) tiltcallbackG(measurements);
-								measurements.shakeXcnt++;
 						}
 						
 				}
@@ -537,8 +563,6 @@ THE SOFTWARE.
 				lastmeasure.beta=measurements.beta;
 				lastmeasure.gamma=measurements.gamma;
 				
-				console.log(db);
-
 		};
 
 }(window, document));
