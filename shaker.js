@@ -122,7 +122,11 @@ THE SOFTWARE.
 				dx:null,
 				dy:null,
 				dz:null,
-				d:null,
+				
+				// Orientation Detection
+				da:null,
+				db:null,
+				dg:null,
 				
 				shakes:null,
 				shakesX:null,
@@ -140,6 +144,10 @@ THE SOFTWARE.
 				x: 0,
 				y: 0,
 				z: 0,
+				
+				alpha:0,
+				beta:0,
+				gamma:0,
 				
 				shaked:0,
 				shakedX:0,
@@ -198,6 +206,12 @@ THE SOFTWARE.
 		{
 				if(eventkind=="shake"){
 						shakecallback=callback;
+				}else if(eventkind=="tiltA"){
+						tiltcallbackA=callback;
+				}else if(eventkind=="tiltB"){
+						tiltcallbackB=callback;
+				}else if(eventkind=="tiltG"){
+						tiltcallbackG=callback;
 				}else if(eventkind=="shakeX"){
 						shakecallbackX=callback;
 				}else if(eventkind=="shakeY"){
@@ -219,7 +233,7 @@ THE SOFTWARE.
 						alert('Unknown Shaker Event: '+eventkind);
 				}
 
-				if(eventkind=="step"||eventkind=="stepX"||eventkind=="stepY"||eventkind=="stepZ"||eventkind=="shake"||eventkind=="shakeX"||eventkind=="shakeY"||eventkind=="shakeZ"){
+				if(eventkind=="step"||eventkind=="stepX"||eventkind=="stepY"||eventkind=="stepZ"||eventkind=="shake"||eventkind=="shakeX"||eventkind=="shakeY"||eventkind=="shakeZ"||eventkind=="tiltA"||eventkind=="tiltB"||eventkind=="tiltG"){
 						if(stepinterval==null){
 								stepinterval = setInterval(function() { evalstep(); }, shaker.stepfrequency);
 								shaker.shakecnt = 0;
@@ -454,9 +468,17 @@ THE SOFTWARE.
 				lastmeasure.shakedZ=shakedZ;
 		}
 
+		/********************************************************************************
+		   evalstep
+		   
+		   evalstep is called at a set interval, for evaluating when to send callback events for 
+		   shaking and orientation changes.
+		   
+		*********************************************************************************/
+
 		function evalstep() {
 
-				// If there is a measurement to evaluate
+				// If there is a shake/step measurement to evaluate
 				if(lastmeasure.x!=null){
 						dx=lastmeasure.x-measurements.x;
 						dy=lastmeasure.y-measurements.y;
@@ -487,9 +509,35 @@ THE SOFTWARE.
 						} 				
 				}
 
+				if(lastmeasure.alpha!=null||lastmeasure.beta!=null||lastmeasure.gamma!=null){
+						da=lastmeasure.alpha-measurements.alpha;
+						db=lastmeasure.beta-measurements.beta;
+						dg=lastmeasure.gamma-measurements.gamma;
+						
+						if(Math.abs(da)>3){
+								if(tiltcallbackA!=null) tiltcallbackA(measurements);
+								measurements.shakeXcnt++;
+						}
+						if(Math.abs(db)>3){
+								if(tiltcallbackB!=null) tiltcallbackB(measurements);
+								measurements.shakeXcnt++;
+						}
+						if(Math.abs(dg)>3){
+								if(tiltcallbackG!=null) tiltcallbackG(measurements);
+								measurements.shakeXcnt++;
+						}
+						
+				}
+					
 				lastmeasure.x=measurements.x;
 				lastmeasure.y=measurements.y;
 				lastmeasure.z=measurements.z;
+
+				lastmeasure.alpha=measurements.alpha;
+				lastmeasure.beta=measurements.beta;
+				lastmeasure.gamma=measurements.gamma;
+				
+				console.log(db);
 
 		};
 

@@ -1,0 +1,35 @@
+<html>
+<head>
+   <style>
+   </style>
+
+    <script src="shaker.js"></script> 
+
+    <script>
+   		function initShaker()
+    	{
+					shaker.on("tiltA",function(o){
+								document.getElementById("printout").innerHTML+="TILTA"+"<br/>";
+					});
+
+					shaker.on("tiltB",function(o){
+								document.getElementById("printout").innerHTML+="TILTB"+"<br/>";
+					});
+
+					shaker.on("tiltG",function(o){
+								document.getElementById("printout").innerHTML+="TILTG"+"<br/>";
+								// document.getElementById("printout").innerHTML+="# SHAKES: "+o.shakes+"\n"; /* Print out # shakes registered */
+					});
+
+    	}
+
+   	</script> 
+
+</head>
+
+<body onload="initShaker();">
+		Test Page
+		<div id="printout" style="background:#fed;border:1px solid red;" />
+</body>
+
+</html>
