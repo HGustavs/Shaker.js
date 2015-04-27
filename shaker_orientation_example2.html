@@ -12,7 +12,8 @@
     	
    		function initShaker()
     	{
-					 setInterval(updateBall, 30);
+					shaker.on("tilt",function(o){ console.log('fffff') });
+					setInterval(updateBall, 30);
     	}
     	
     	function updateBall()
@@ -30,6 +31,7 @@
     			div.style.top=Math.round(cy);
     	}
     	
+  
     	// Reset calibration of angles
     	function calibrate()
     	{

@@ -197,6 +197,11 @@ THE SOFTWARE.
 		var stepcallbackX = null;
 		var stepcallbackY = null;
 		var stepcallbackZ = null;
+
+		var tiltcallback = null;
+		var tiltcallbackA = null;
+		var tiltcallbackB = null;
+		var tiltcallbackG = null;
 			
 		window.shaker={}
 		
@@ -212,6 +217,8 @@ THE SOFTWARE.
 		{
 				if(eventkind=="shake"){
 						shakecallback=callback;
+				}else if(eventkind=="tilt"){
+						tiltcallback=callback;
 				}else if(eventkind=="tiltA"){
 						tiltcallbackA=callback;
 				}else if(eventkind=="tiltB"){
@@ -239,7 +246,7 @@ THE SOFTWARE.
 						alert('Unknown Shaker Event: '+eventkind);
 				}
 
-				if(eventkind=="step"||eventkind=="stepX"||eventkind=="stepY"||eventkind=="stepZ"||eventkind=="shake"||eventkind=="shakeX"||eventkind=="shakeY"||eventkind=="shakeZ"||eventkind=="tiltA"||eventkind=="tiltB"||eventkind=="tiltG"){
+				if(eventkind=="step"||eventkind=="tilt"||eventkind=="stepX"||eventkind=="stepY"||eventkind=="stepZ"||eventkind=="shake"||eventkind=="shakeX"||eventkind=="shakeY"||eventkind=="shakeZ"||eventkind=="tiltA"||eventkind=="tiltB"||eventkind=="tiltG"){
 						if(stepinterval==null){
 								stepinterval = setInterval(function() { evalstep(); }, shaker.stepfrequency);
 								shaker.shakecnt = 0;

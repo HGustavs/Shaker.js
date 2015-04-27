@@ -14,7 +14,8 @@
     	
    		function initShaker()
     	{
-					 setInterval(updateCar, 30);
+					shaker.on("tilt",function(o){ console.log('fff')});
+					setInterval(updateCar, 30);
     	}
     	
     	function updateCar()
@@ -38,8 +39,6 @@
     			div.style.msTransform     = 'rotate('+cv+'rad)'; 
     			div.style.oTransform      = 'rotate('+cv+'rad)'; 
     			div.style.transform       = 'rotate('+cv+'rad)';
-    			 
-   				
     	}
     	
     	// Reset calibration of angles
