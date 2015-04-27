@@ -131,7 +131,7 @@ THE SOFTWARE.
 				// Orientation Accumilated
 				oaccA:0,
 				oaccB:0,
-				oaccD:0,			
+				oaccG:0,			
 				
 				// Shake Data
 				shakes:null,
@@ -259,7 +259,7 @@ THE SOFTWARE.
 		shaker.calibrateOrientation = function() {
 				measurements.oaccA=0;
 				measurements.oaccB=0;
-				measurements.oaccD=0;
+				measurements.oaccG=0;
 		};
 
 		shaker.getOrientation = function() {
