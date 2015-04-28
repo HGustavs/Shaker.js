@@ -373,6 +373,15 @@ THE SOFTWARE.
 				alert("NAVIGATION ERROR!");
 		}
 	
+		function dist3D(X,Y,Z,XGoal,YGoal,ZGoal)
+		{
+				var dX=XGoal-X;
+				var dY=YGoal-Y;
+				var dZ=ZGoal-Z;
+				
+				return Math.sqrt((dX*dX)+(dY*dY)+(dZ*dZ));
+		}
+	
 		function successNavigation(pos) {
 				if(startPos!=null){
 						// Update "simple" geolocation variables

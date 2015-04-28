@@ -16,6 +16,8 @@
 					shaker.on("tilt",function(o){
 									var div =document.getElementById("printout");
 									div.innerHTML=Math.round(o.oaccA*10.0)/10.0+" "+Math.round(o.oaccB*10.0)/10.0+" "+Math.round(o.oaccG*10.0)/10.0;
+									div.innerHTML+="<br/>";
+									div.innerHTML+=Math.round(o.alpha*10.0)/10.0+" "+Math.round(o.beta*10.0)/10.0+" "+Math.round(o.gamma*10.0)/10.0;
 					});
     	}
     	   	
