@@ -1,0 +1,41 @@
+<html>
+<head>
+   <style>
+   </style>
+
+    <script src="shaker.js"></script> 
+
+    <script>
+    	
+    	var cx=250;
+    	var cy=250;
+    	
+   		// Make events 
+   		function initShaker()
+    	{
+					shaker.on("tilt",function(o){
+									var div =document.getElementById("printout");
+									div.innerHTML=Math.round(o.oaccA*10.0)/10.0+" "+Math.round(o.oaccB*10.0)/10.0+" "+Math.round(o.oaccG*10.0)/10.0;
+					});
+    	}
+    	   	
+  
+    	// Reset calibration of angles
+    	function calibrate()
+    	{
+    			shaker.calibrateOrientation();
+    	}
+
+   	</script> 
+
+</head>
+
+<body onload="initShaker();">
+		Test Page
+	<input type="button" onclick="calibrate();" />
+		<div id="printout" style="background:#fed;border:1px solid red;" />
+		
+	
+</body>
+
+</html>

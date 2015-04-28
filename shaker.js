@@ -560,6 +560,8 @@ THE SOFTWARE.
 								if(tiltcallbackG!=null) tiltcallbackG(measurements);
 						}
 						
+						tiltcallback(measurements);
+						
 				}
 					
 				lastmeasure.x=measurements.x;
