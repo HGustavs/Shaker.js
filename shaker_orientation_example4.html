@@ -1,0 +1,53 @@
+<html>
+<head>
+   <style>
+   </style>
+
+    <script src="shaker.js"></script> 
+
+    <script>
+    	
+   		// Make events 
+   		function initShaker()
+    	{
+					shaker.on("tilt",function(o){
+									
+							var div =document.getElementById("compass");
+							var cv=-o.gamma;
+		 
+		    			div.style.webkitTransform = 'rotate('+cv+'deg)'; 
+		    			div.style.mozTransform    = 'rotate('+cv+'deg)'; 
+		    			div.style.msTransform     = 'rotate('+cv+'deg)'; 
+		    			div.style.oTransform      = 'rotate('+cv+'deg)'; 
+		    			div.style.transform       = 'rotate('+cv+'deg)';
+
+					});
+    	}
+    	   	
+  
+    	// Reset calibration of angles
+    	function calibrate()
+    	{
+    			shaker.calibrateOrientation();
+    	}
+
+   	</script> 
+
+</head>
+
+<body onload="initShaker();">
+		Test Page
+	<input type="button" onclick="calibrate();" />
+
+	<div id="compass" style="position:absolute;left:0px;top:0px;width:200px;height:200px;z-index:100;">
+			<img src="gyro.svg" style="width:200px;height:200px;" />
+	</div>
+	
+	<div id="compassc" style="position:absolute;left:0px;top:0px;width:200px;height:200px;z-index:200;">
+			<img src="gyroc.svg" style="width:200px;height:200px;" />
+	</div>
+		
+	
+</body>
+
+</html>
