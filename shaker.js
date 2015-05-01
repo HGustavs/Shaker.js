@@ -142,8 +142,8 @@ THE SOFTWARE.
 				shakecnt:null,
 				shakeXcnt:null,
 				shakeYcnt:null,
-				shakeZcnt:null
-				
+				shakeZcnt:null,
+								
 			},
 
 			lastmeasure = {
@@ -202,7 +202,11 @@ THE SOFTWARE.
 		var tiltcallbackA = null;
 		var tiltcallbackB = null;
 		var tiltcallbackG = null;
+
+		var statecallback = null;
 			
+		var	oldstate = "";
+
 		window.shaker={}
 		
 		shaker.shaketreshold = 4;
@@ -219,6 +223,8 @@ THE SOFTWARE.
 						shakecallback=callback;
 				}else if(eventkind=="tilt"){
 						tiltcallback=callback;
+				}else if(eventkind=="state"){
+						statecallback=callback;
 				}else if(eventkind=="tiltA"){
 						tiltcallbackA=callback;
 				}else if(eventkind=="tiltB"){
@@ -246,7 +252,7 @@ THE SOFTWARE.
 						alert('Unknown Shaker Event: '+eventkind);
 				}
 
-				if(eventkind=="step"||eventkind=="tilt"||eventkind=="stepX"||eventkind=="stepY"||eventkind=="stepZ"||eventkind=="shake"||eventkind=="shakeX"||eventkind=="shakeY"||eventkind=="shakeZ"||eventkind=="tiltA"||eventkind=="tiltB"||eventkind=="tiltG"){
+				if(eventkind=="state"||eventkind=="step"||eventkind=="tilt"||eventkind=="stepX"||eventkind=="stepY"||eventkind=="stepZ"||eventkind=="shake"||eventkind=="shakeX"||eventkind=="shakeY"||eventkind=="shakeZ"||eventkind=="tiltA"||eventkind=="tiltB"||eventkind=="tiltG"){
 						if(stepinterval==null){
 								stepinterval = setInterval(function() { evalstep(); }, shaker.stepfrequency);
 								shaker.shakecnt = 0;
@@ -569,10 +575,30 @@ THE SOFTWARE.
 								if(tiltcallbackG!=null) tiltcallbackG(measurements);
 						}
 						
-						tiltcallback(measurements);
+						if(tiltcallback!=null) tiltcallback(measurements);
 						
 				}
-					
+
+				var newstate="UNK";
+				if(measurements.beta>60&&measurements.beta<120){
+						if(measurements.gamma>-60&&measurements.gamma<60) newstate="UP";
+				}else if(measurements.beta>-115&&measurements.beta<-65){
+						if(measurements.gamma>-60&&measurements.gamma<60) newstate="DOWN";
+				}else if((measurements.gamma>=-90&&measurements.gamma<-70)){
+						if(measurements.beta>-20&&measurements.beta<20) newstate="LSIDE";
+				}else if((measurements.gamma>=70&&measurements.gamma<90)){
+						if(measurements.beta>160&&measurements.beta<=180) newstate="LSIDE";
+						if(measurements.beta<-160&&measurements.beta>=-180) newstate="LSIDE";
+						if(measurements.beta>-20&&measurements.beta<20) newstate="RSIDE";
+				}else if((Math.abs(measurements.gamma)<20&&Math.abs(measurements.beta)<20)){
+						newstate="FLAT";
+				}
+				
+				if(oldstate!=newstate&&newstate!="UNK"){
+						if(statecallback!=null) statecallback(newstate);
+				}
+				if(newstate!="UNK") oldstate=newstate;
+
 				lastmeasure.x=measurements.x;
 				lastmeasure.y=measurements.y;
 				lastmeasure.z=measurements.z;

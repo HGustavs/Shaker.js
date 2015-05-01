@@ -3,22 +3,29 @@
    <style>
    </style>
 
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
     <script src="shaker.js"></script> 
 
     <script>
     	
     	var cx=250;
     	var cy=250;
+    	var oldstate="NONE";
     	
    		// Make events 
    		function initShaker()
     	{
-					shaker.on("tilt",function(o){
-									var div =document.getElementById("printout");
-									div.innerHTML=Math.round(o.oaccA*10.0)/10.0+" "+Math.round(o.oaccB*10.0)/10.0+" "+Math.round(o.oaccG*10.0)/10.0;
-									div.innerHTML+="<br/>";
-									div.innerHTML+=Math.round(o.alpha*10.0)/10.0+" "+Math.round(o.beta*10.0)/10.0+" "+Math.round(o.gamma*10.0)/10.0;
+					shaker.on("state",function(o){
+							var div =document.getElementById("printout");
+							div.innerHTML=o;
 					});
+
+					shaker.on("tilt",function(o){
+							var div =document.getElementById("printout2");
+							div.innerHTML=(Math.round(o.alpha*10.0)/10.0)+" "+(Math.round(o.beta*10.0)/10.0)+" "+(Math.round(o.gamma*10.0)/10.0);
+					});
+
     	}
     	   	
   
@@ -34,9 +41,9 @@
 
 <body onload="initShaker();">
 		Test Page
-	<input type="button" onclick="calibrate();" />
-		<div id="printout" style="background:#fed;border:1px solid red;" />
-		
+
+	<div id="printout" style="position:absolute;left:0;top:0;background:#fed;border:1px solid red;" ></div>
+	<div id="printout2" style="position:absolute;left:0;top:100;background:#def;border:1px solid blue;" ></div>
 	
 </body>
 

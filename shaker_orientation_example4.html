@@ -13,7 +13,7 @@
 					shaker.on("tilt",function(o){
 									
 							var div =document.getElementById("compass");
-							var cv=-o.gamma;
+							var cv=o.gamma;
 		 
 		    			div.style.webkitTransform = 'rotate('+cv+'deg)'; 
 		    			div.style.mozTransform    = 'rotate('+cv+'deg)'; 
