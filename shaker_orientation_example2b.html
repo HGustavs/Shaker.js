@@ -32,7 +32,8 @@
     			// Verlet Physics Update
     			cx+=cxv;
     			cy+=cyv;
-    			
+    			 			
+    			// Bounce
     			if(cx<-10){
     					cx=-8;
     					cxv=-cxv;
@@ -50,7 +51,7 @@
     					cyv=-cyv;
     			}
  
-    	
+    			// Update GFX
     			var div =document.getElementById("ball");
     			div.style.left=Math.round(cx);
     			div.style.top=Math.round(cy);

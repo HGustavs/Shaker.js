@@ -24,20 +24,11 @@
 					});
     	}
     	   	
-  
-    	// Reset calibration of angles
-    	function calibrate()
-    	{
-    			shaker.calibrateOrientation();
-    	}
-
    	</script> 
 
 </head>
 
 <body onload="initShaker();">
-		Test Page
-	<input type="button" onclick="calibrate();" />
 
 	<div id="compass" style="position:absolute;left:0px;top:0px;width:200px;height:200px;z-index:100;">
 			<img src="gyro.svg" style="width:200px;height:200px;" />

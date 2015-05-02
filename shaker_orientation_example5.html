@@ -1,0 +1,51 @@
+<html>
+<head>
+   <style>
+   </style>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <script src="shaker.js"></script> 
+
+    <script>
+    	
+    	var oldstate="NONE";
+    	
+   		// Make events 
+   		function initShaker()
+    	{
+					shaker.on("state",function(o){
+							var div =document.getElementById("printout");
+							div.innerHTML=o;
+
+							var boxdiv =document.getElementById("Textbox");
+							
+							if(o=="UP"||o=="FLAT") cv=0;
+							if(o=="LSIDE") cv=90;
+							if(o=="RSIDE") cv=-90;
+							if(o=="DOWN") cv=180;
+
+		    			boxdiv.style.webkitTransform = 'rotate('+cv+'deg)'; 
+		    			boxdiv.style.mozTransform    = 'rotate('+cv+'deg)'; 
+		    			boxdiv.style.msTransform     = 'rotate('+cv+'deg)'; 
+		    			boxdiv.style.oTransform      = 'rotate('+cv+'deg)'; 
+		    			boxdiv.style.transform       = 'rotate('+cv+'deg)';
+
+					});
+
+    	}
+    	   	
+   	</script> 
+
+</head>
+
+<body onload="initShaker();">
+		Test Page
+
+	<div id="printout" style="position:absolute;left:0;top:0;background:#fed;border:1px solid red;" ></div>
+	<div id="printout2" style="position:absolute;left:0;top:100;background:#def;border:1px solid blue;" ></div>
+
+	<div id="Textbox" style="position:absolute;left:50%;top:50%;font: italic bold 30px Verdana;background:#dfe;border:1px solid darkgreen;" >HTML5</div>	
+</body>
+
+</html>
