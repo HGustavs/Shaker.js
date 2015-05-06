@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shaker.js, Orientation Example: Moving ball 1</title>
+    <script src="../shaker.js"></script> 
+
+    <script>
+
+        // Define constants for the drawing area
+        // i.e., the window size for the ball
+        var WINDOW_X_MIN = -10;
+        var WINDOW_Y_MIN = -10;
+        var WINDOW_X_MAX = 510;
+        var WINDOW_Y_MAX = 510;
+    	
+        // Defines the coordinats for the ball
+        var cx=250;
+    	var cy=250;
+    	
+   		function initShaker()
+    	{
+			shaker.on("tilt",function(o){ 
+                // Empty event handler that will force
+                // Shaker.js to update the accumulated
+                // orientation sensor values found in:
+                // e.g., shaker.getOrientation().oaccG
+            });
+
+			setInterval(updateBall, 30);
+    	}
+    	
+    	function updateBall()
+    	{
+   			cx-=shaker.getOrientation().oaccG*0.1;
+   			cy-=shaker.getOrientation().oaccB*0.1;
+    		
+            // Check if we have reached the end of the 
+            // drawing area
+   			if(cx<WINDOW_X_MIN) cx=WINDOW_X_MAX-10;
+			if(cx>WINDOW_X_MAX) cx=WINDOW_X_MIN+10;
+			if(cy<WINDOW_Y_MIN) cy=WINDOW_Y_MAX-10;
+			if(cy>WINDOW_Y_MAX) cy=WINDOW_Y_MIN+10;
+	
+            // Move the ball using the updated coordinates
+			var div =document.getElementById("ball");
+			div.style.left=Math.round(cx);
+			div.style.top=Math.round(cy);
+    	}
+  
+    	// Reset calibration of angles
+    	function calibrate()
+    	{
+   			shaker.calibrateOrientation();
+    	}
+
+   	</script> 
+
+</head>
+
+<body onload="initShaker();">
+	<input type="button" onclick="calibrate();" value="Calibrate" />
+	<div id="printout" style="background:#fed;border:1px solid red;" />
+			
+	<div id="ball" style="position:absolute;left:250 px;top:250 px;width:48px;height:48px;">
+		<img src="images/Ballsy.svg" style="transform-origin: 50% 50%;width:48px;height:48px;">
+	</div>
+	
+</body>
+
+</html>
