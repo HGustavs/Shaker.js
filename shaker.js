@@ -38,13 +38,13 @@ Events supported
           
 Properties supported
 ----------------------
-          steptreshold      (jolt sensitivity treshold)
-          stepinterval      (jolt timing interval)
-          shaketreshold     (shake sensitivity treshold)
-          shakeinterval     (shake timing interval)
+          stepThreshold     (jolt sensitivity treshold)
+          stepInterval      (jolt timing interval)
+          shakeThreshold    (shake sensitivity treshold)
+          shakeInterval     (shake timing interval)
 
-          orienttreshold    (orientation sensitivity treshold)
-          shakelength       (time before forgetting shake)
+          orientThreshold   (orientation sensitivity treshold)
+          shakeLength       (time before forgetting shake)
 
 How to use
 -----------------------
@@ -184,9 +184,9 @@ THE SOFTWARE.
 
 		var lastTime = null;
 
-		var	shakeinterval = null;
+		var	shakeInterval = null;
 		var geointerval = null;
-		var stepinterval = null;
+		var stepInterval = null;
 
 		var shakecallback = null;
 		var shakecallbackX = null;
@@ -209,7 +209,7 @@ THE SOFTWARE.
 
 		window.shaker={}
 		
-		shaker.shaketreshold = 4;
+		shaker.shakeThreshold = 4;
 		shaker.stepfrequency = 500; 
 		shaker.shakefrequency = 1500; 
 
@@ -253,8 +253,8 @@ THE SOFTWARE.
 				}
 
 				if(eventkind=="state"||eventkind=="step"||eventkind=="tilt"||eventkind=="stepX"||eventkind=="stepY"||eventkind=="stepZ"||eventkind=="shake"||eventkind=="shakeX"||eventkind=="shakeY"||eventkind=="shakeZ"||eventkind=="tiltA"||eventkind=="tiltB"||eventkind=="tiltG"){
-						if(stepinterval==null){
-								stepinterval = setInterval(function() { evalstep(); }, shaker.stepfrequency);
+						if(stepInterval==null){
+								stepInterval = setInterval(function() { evalstep(); }, shaker.stepfrequency);
 								shaker.shakecnt = 0;
 								shaker.shakecntX = 0;
 								shaker.shakecntY = 0;
@@ -262,8 +262,8 @@ THE SOFTWARE.
 						}
 				}
 				if(eventkind=="shake"||eventkind=="shakeX"||eventkind=="shakeY"||eventkind=="shakeZ"){
-						if(shakeinterval==null){
-								shakeinterval = setInterval(function() { evalshake(); }, shaker.shakefrequency);
+						if(shakeInterval==null){
+								shakeInterval = setInterval(function() { evalshake(); }, shaker.shakefrequency);
 						}
 				}
 
@@ -280,8 +280,8 @@ THE SOFTWARE.
 		};
 
 		shaker.stopTracking = function() {
-				if(shakeinterval!=null) clearInterval(shakeinterval);
-				if(stepinterval!=null) clearInterval(stepinterval);
+				if(shakeInterval!=null) clearInterval(shakeInterval);
+				if(stepInterval!=null) clearInterval(stepInterval);
 				if(geointerval!=null) clearInterval(geointerval);
 		};
 
@@ -458,7 +458,7 @@ THE SOFTWARE.
 							lastmeasure.shakedstart=lastmeasure.shakecnt;
 						}else if(shaked==0&&lastmeasure.shaked>0){
 									var shakedss=measurements.shakecnt-lastmeasure.shakedstart;
-									if(shakedss>=shaker.shaketreshold){
+									if(shakedss>=shaker.shakeThreshold){
 											measurements.shakes=shakedss;
 											if(shakecallback!=null) shakecallback(measurements);		
 									}
@@ -469,7 +469,7 @@ THE SOFTWARE.
 							lastmeasure.shakedXstart=lastmeasure.shakeXcnt;
 						}else if(shakedX==0&&lastmeasure.shakedX>0){
 									var shakedss=measurements.shakeXcnt-lastmeasure.shakedXstart;
-									if(shakedss>=shaker.shaketreshold){
+									if(shakedss>=shaker.shakeThreshold){
 											measurements.shakes=shakedss;
 											if(shakecallbackX!=null) shakecallbackX(measurements);		
 									}
@@ -480,7 +480,7 @@ THE SOFTWARE.
 							lastmeasure.shakedYstart=lastmeasure.shakeYcnt;
 						}else if(shakedY==0&&lastmeasure.shakedY>0){
 									var shakedss=measurements.shakeYcnt-lastmeasure.shakedYstart;
-									if(shakedss>=shaker.shaketreshold){
+									if(shakedss>=shaker.shakeThreshold){
 											measurements.shakes=shakedss;
 											if(shakecallbackY!=null) shakecallbackY(measurements);		
 									}
@@ -491,7 +491,7 @@ THE SOFTWARE.
 							lastmeasure.shakedZstart=lastmeasure.shakeZcnt;
 						}else if(shakedZ==0&&lastmeasure.shakedZ>0){
 									var shakedss=measurements.shakeZcnt-lastmeasure.shakedZstart;
-									if(shakedss>=shaker.shaketreshold){
+									if(shakedss>=shaker.shakeThreshold){
 											measurements.shakes=shakedss;
 											if(shakecallbackZ!=null) shakecallbackZ(measurements);		
 									}
