@@ -328,32 +328,63 @@ THE SOFTWARE.
 				// These listeners update the internal on-demand variables in Shaker
 				
 				function setupListeners() {
+					
+						if (typeof DeviceMotionEvent.requestPermission === 'function') {
+								DeviceMotionEvent.requestPermission().then(permissionState => {
+									if (permissionState === 'granted') {
+											window.addEventListener('devicemotion', function(e) {
+													measurements.x = e.accelerationIncludingGravity.x;
+													measurements.y = e.accelerationIncludingGravity.y;
+													measurements.z = e.accelerationIncludingGravity.z;
 
-						window.addEventListener('MozOrientation', function(e) {
-								measurements.x = e.x;
-								measurements.y = e.y;
-								measurements.z = e.z;
-						}, true);
-						window.addEventListener('devicemotion', function(e) {
-								measurements.x = e.accelerationIncludingGravity.x;
-								measurements.y = e.accelerationIncludingGravity.y;
-								measurements.z = e.accelerationIncludingGravity.z;
-								
-								if(measurements.shakecnt==null){
-										measurements.shakecnt=0;
-										measurements.shakeXcnt=0;
-										measurements.shakeYcnt=0;
-										measurements.shakeZcnt=0;
-								}
-								
-						}, true);
-						window.addEventListener('deviceorientation', function(e) {
-								measurements.alpha = e.alpha;
-								measurements.beta = e.beta;
-								measurements.gamma = e.gamma;
-						}, true);
-				
+													if(measurements.shakecnt==null){
+															measurements.shakecnt=0;
+															measurements.shakeXcnt=0;
+															measurements.shakeYcnt=0;
+															measurements.shakeZcnt=0;
+													}
+
+											}, true);
+									}
+								});
+								if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+									DeviceOrientationEvent.requestPermission().then(permissionState => {
+											if (permissionState === 'granted') {
+												window.addEventListener('deviceorientation', function(e) {
+														measurements.alpha = e.alpha;
+														measurements.beta = e.beta;
+														measurements.gamma = e.gamma;
+												}, true);
+											}
+										});
+								}			
+						} else {
+								window.addEventListener('MozOrientation', function(e) {
+										measurements.x = e.x;
+										measurements.y = e.y;
+										measurements.z = e.z;
+								}, true);
+								window.addEventListener('devicemotion', function(e) {
+										measurements.x = e.accelerationIncludingGravity.x;
+										measurements.y = e.accelerationIncludingGravity.y;
+										measurements.z = e.accelerationIncludingGravity.z;
+
+										if(measurements.shakecnt==null){
+												measurements.shakecnt=0;
+												measurements.shakeXcnt=0;
+												measurements.shakeYcnt=0;
+												measurements.shakeZcnt=0;
+										}
+
+								}, true);
+								window.addEventListener('deviceorientation', function(e) {
+										measurements.alpha = e.alpha;
+										measurements.beta = e.beta;
+										measurements.gamma = e.gamma;
+								}, true);
 				}
+    }					
+
 				setupListeners();
 		}
 				
