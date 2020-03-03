@@ -323,7 +323,7 @@ THE SOFTWARE.
 
 		if (window && window.addEventListener) {
 
-        if (document.getElementById("printout") != null && doprintout) document.getElementById("printout").innerHTML += "Listeners Setup!";
+				if(document.getElementById("printout")!=null && doprintout)	document.getElementById("printout").innerHTML+="Listeners Setup!";
 
 				// These listeners update the internal on-demand variables in Shaker
 				
@@ -388,7 +388,7 @@ THE SOFTWARE.
 				setupListeners();
 		}
 				
-    function getDist(lat1, lon1, lat2, lon2) {
+    function  getDist(lat1, lon1, lat2, lon2) {
         var R = 6371; // km
 
         var dLat = toRad(lat2-lat1);
