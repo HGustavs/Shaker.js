@@ -97,13 +97,13 @@ THE SOFTWARE.
 
 (function (window, document) {
 
-	var measurements = {
-				// Basics
-				x: null,
-				y: null,
-				z: null,
-				alpha: null,
-				beta: null,
+    var measurements = {
+            // Basics
+            x: null,
+            y: null,
+            z: null,
+            alpha: null,
+            beta: null,
 				gamma: null,
 
 				// Navigation
@@ -146,8 +146,8 @@ THE SOFTWARE.
 								
 			},
 
-			lastmeasure = {
-				x: 0,
+        lastmeasure = {
+            x: 0,
 				y: 0,
 				z: 0,
 				
@@ -180,7 +180,7 @@ THE SOFTWARE.
 
 		// Distance from startingpoint, cumulative distance, and last time
 		var startPos = null;
-		var lastPos = null;
+    var lastPos = null;
 
 		var lastTime = null;
 
@@ -188,20 +188,20 @@ THE SOFTWARE.
 		var geointerval = null;
 		var stepinterval = null;
 
-		var shakecallback = null;
-		var shakecallbackX = null;
-		var shakecallbackY = null;
-		var shakecallbackZ = null;
+    var shakecallback = null;
+    var shakecallbackX = null;
+    var shakecallbackY = null;
+    var shakecallbackZ = null;
 
-		var stepcallback = null;
-		var stepcallbackX = null;
-		var stepcallbackY = null;
-		var stepcallbackZ = null;
+    var stepcallback = null;
+    var stepcallbackX = null;
+    var stepcallbackY = null;
+    var stepcallbackZ = null;
 
-		var tiltcallback = null;
-		var tiltcallbackA = null;
-		var tiltcallbackB = null;
-		var tiltcallbackG = null;
+    var tiltcallback = null;
+    var tiltcallbackA = null;
+    var tiltcallbackB = null;
+    var tiltcallbackG = null;
 
 		var statecallback = null;
 			
@@ -211,9 +211,9 @@ THE SOFTWARE.
 		
 		shaker.shaketreshold = 4;
 		shaker.stepfrequency = 500; 
-		shaker.shakefrequency = 1500; 
+    shaker.shakefrequency = 1500;
 
-		shaker.hasGeoLocation = false;
+    shaker.hasGeoLocation = false;
 		shaker.geolocationcallback = null;
 		shaker.geofrequency = 30000;				
 
@@ -307,87 +307,153 @@ THE SOFTWARE.
 					    });
 													
 						function error(err) {
-						  console.warn('ERROR(' + err.code + '): ' + err.message);
-						};
-						
-						options = {
-						  enableHighAccuracy: false,
-						  timeout: 8000,
-						  maximumAge: 0
-						};
-						
-						navigator.geolocation.watchPosition(successNavigation, error, options);
-					
-				}		
-		}
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            };
 
-		if (window && window.addEventListener) {
+            options = {
+                enableHighAccuracy: false,
+                timeout: 8000,
+                maximumAge: 0
+            };
 
-				if(document.getElementById("printout")!=null && doprintout)	document.getElementById("printout").innerHTML+="Listeners Setup!";
+            navigator.geolocation.watchPosition(successNavigation, error, options);
 
-				// These listeners update the internal on-demand variables in Shaker
-				
-				function setupListeners() {
-					
-						if (typeof DeviceMotionEvent.requestPermission === 'function') {
-								DeviceMotionEvent.requestPermission().then(permissionState => {
-									if (permissionState === 'granted') {
-											window.addEventListener('devicemotion', function(e) {
-													measurements.x = e.accelerationIncludingGravity.x;
-													measurements.y = e.accelerationIncludingGravity.y;
-													measurements.z = e.accelerationIncludingGravity.z;
+        }
+    }
 
-													if(measurements.shakecnt==null){
-															measurements.shakecnt=0;
-															measurements.shakeXcnt=0;
-															measurements.shakeYcnt=0;
-															measurements.shakeZcnt=0;
-													}
+    function requestSensors() {
+        if (typeof (DeviceMotionEvent) !== 'undefined' && typeof (DeviceMotionEvent.requestPermission) === 'function') {
 
-											}, true);
-									}
-								});
-								if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-									DeviceOrientationEvent.requestPermission().then(permissionState => {
-											if (permissionState === 'granted') {
-												window.addEventListener('deviceorientation', function(e) {
-														measurements.alpha = e.alpha;
-														measurements.beta = e.beta;
-														measurements.gamma = e.gamma;
-												}, true);
-											}
-										});
-								}			
-						} else {
-								window.addEventListener('MozOrientation', function(e) {
-										measurements.x = e.x;
-										measurements.y = e.y;
-										measurements.z = e.z;
-								}, true);
-								window.addEventListener('devicemotion', function(e) {
-										measurements.x = e.accelerationIncludingGravity.x;
-										measurements.y = e.accelerationIncludingGravity.y;
-										measurements.z = e.accelerationIncludingGravity.z;
+            DeviceMotionEvent.requestPermission()
+                .then(response => {
+                    alert('Orientation tracking ' + response);
 
-										if(measurements.shakecnt==null){
-												measurements.shakecnt=0;
-												measurements.shakeXcnt=0;
-												measurements.shakeYcnt=0;
-												measurements.shakeZcnt=0;
-										}
+                    if (response == 'granted') {
+                        window.addEventListener('devicemotion', (e) => {
+                            document.getElementById('request').style.display = 'none';
+                            window.addEventListener('devicemotion', function (e) {
+                                measurements.x = e.accelerationIncludingGravity.x;
+                                measurements.y = e.accelerationIncludingGravity.y;
+                                measurements.z = e.accelerationIncludingGravity.z;
+    
+                                if (measurements.shakecnt == null) {
+                                    measurements.shakecnt = 0;
+                                    measurements.shakeXcnt = 0;
+                                    measurements.shakeYcnt = 0;
+                                    measurements.shakeZcnt = 0;
+                                }
+    
+                            }, true);
+                        })
+                    }
+                })
+                .catch(console.error)
+        } else {
+            alert('DeviceMotionEvent is not defined');
+        }
 
-								}, true);
-								window.addEventListener('deviceorientation', function(e) {
-										measurements.alpha = e.alpha;
-										measurements.beta = e.beta;
-										measurements.gamma = e.gamma;
-								}, true);
-				}
-    }					
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then(permissionState => {
+                if (permissionState === 'granted') {
+                    window.addEventListener('deviceorientation', function (e) {
+                        measurements.alpha = e.alpha;
+                        measurements.beta = e.beta;
+                        measurements.gamma = e.gamma;
+                    }, true);
+                }
+            });
+        }        
+    }
 
-				setupListeners();
-		}
-				
+    if (window && window.addEventListener) {
+
+        if (document.getElementById("printout") != null && doprintout) document.getElementById("printout").innerHTML += "Listeners Setup!";
+
+        // These listeners update the internal on-demand variables in Shaker
+
+        function setupListeners() {
+
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission().then(permissionState => {
+                    if (permissionState === 'granted') {
+												document.getElementById("request-sensors-btn").style.display="none";
+                        window.addEventListener('devicemotion', function (e) {
+                            measurements.x = e.accelerationIncludingGravity.x;
+                            measurements.y = e.accelerationIncludingGravity.y;
+                            measurements.z = e.accelerationIncludingGravity.z;
+
+                            if (measurements.shakecnt == null) {
+                                measurements.shakecnt = 0;
+                                measurements.shakeXcnt = 0;
+                                measurements.shakeYcnt = 0;
+                                measurements.shakeZcnt = 0;
+                            }
+
+                        }, true);
+                    }
+                });
+                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission().then(permissionState => {
+                        if (permissionState === 'granted') {
+														document.getElementById("request-sensors-btn").style.display="none";
+                            window.addEventListener('deviceorientation', function (e) {
+                                measurements.alpha = e.alpha;
+                                measurements.beta = e.beta;
+                                measurements.gamma = e.gamma;
+                            }, true);
+                        }
+                    });
+                }
+            } else {
+                window.addEventListener('MozOrientation', function (e) {
+                    measurements.x = e.x;
+                    measurements.y = e.y;
+                    measurements.z = e.z;
+                }, true);
+                window.addEventListener('devicemotion', function (e) {
+                    measurements.x = e.accelerationIncludingGravity.x;
+                    measurements.y = e.accelerationIncludingGravity.y;
+                    measurements.z = e.accelerationIncludingGravity.z;
+
+                    if (measurements.shakecnt == null) {
+                        measurements.shakecnt = 0;
+                        measurements.shakeXcnt = 0;
+                        measurements.shakeYcnt = 0;
+                        measurements.shakeZcnt = 0;
+                    }
+
+                }, true);
+                window.addEventListener('deviceorientation', function (e) {
+                    measurements.alpha = e.alpha;
+                    measurements.beta = e.beta;
+                    measurements.gamma = e.gamma;
+                }, true);
+            }
+            window.addEventListener('load', function (e) {
+                // Add button to ask for permission to use motion sensors if on ios13+
+                var match = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
+                    version;
+
+                if (match !== undefined && match !== null) {
+                    version = [
+                        parseInt(match[1], 10),
+                        parseInt(match[2], 10),
+                        parseInt(match[3] || 0, 10)
+                    ];
+                    ver = parseFloat(version.join('.'));
+                    if (ver >= 13) {
+                        let str = "<button id='request-sensors-btn' style='position:fixed;top:5px;left:5px;font-size: 18px;z-index:10000;' >Enable Sensors</button>";
+                        document.body.innerHTML += str;
+                        document.getElementById("request-sensors-btn").onclick = requestSensors;
+                    }
+                }
+
+            }, true);
+        }
+
+        setupListeners();
+    }
+
     function  getDist(lat1, lon1, lat2, lon2) {
         var R = 6371; // km
 
@@ -401,7 +467,7 @@ THE SOFTWARE.
         var d = R * c;
         return d;
     }
-     
+
     function toRad(num) {
         return num * Math.PI / 180;
     }  
@@ -470,13 +536,13 @@ THE SOFTWARE.
 		};
 
 		
-		/********************************************************************************
-		   evalshake
-		   
-		   evalshake is called to evaluate if the last set of steps constitute a shake
-		   event or not.
-		   
-		*********************************************************************************/
+    /********************************************************************************
+       evalshake
+       
+       evalshake is called to evaluate if the last set of steps constitute a shake
+       event or not.
+       
+    *********************************************************************************/
 
 		function evalshake() {
 
@@ -543,12 +609,12 @@ THE SOFTWARE.
 		}
 
 		/********************************************************************************
-		   evalstep
-		   
-		   evalstep is called at a set interval, for evaluating when to send callback events for 
-		   shaking and orientation changes.
-		   
-		*********************************************************************************/
+       evalstep
+       
+       evalstep is called at a set interval, for evaluating when to send callback events for 
+       shaking and orientation changes.
+       
+    *********************************************************************************/
 
 		function evalstep() {
 
