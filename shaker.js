@@ -329,8 +329,8 @@ THE SOFTWARE.
                     alert('Orientation tracking ' + response);
 
                     if (response == 'granted') {
-                        window.addEventListener('devicemotion', (e) => {
-                            document.getElementById('request').style.display = 'none';
+												document.getElementById('request-sensors-container').style.display = 'none';
+												window.addEventListener('devicemotion', (e) => {
                             window.addEventListener('devicemotion', function (e) {
                                 measurements.x = e.accelerationIncludingGravity.x;
                                 measurements.y = e.accelerationIncludingGravity.y;
@@ -353,9 +353,10 @@ THE SOFTWARE.
         }
 
         if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission().then(permissionState => {
+						DeviceOrientationEvent.requestPermission().then(permissionState => {
                 if (permissionState === 'granted') {
-                    window.addEventListener('deviceorientation', function (e) {
+										document.getElementById('request-sensors-container').style.display = 'none';
+										window.addEventListener('deviceorientation', function (e) {
                         measurements.alpha = e.alpha;
                         measurements.beta = e.beta;
                         measurements.gamma = e.gamma;
@@ -372,7 +373,7 @@ THE SOFTWARE.
         // These listeners update the internal on-demand variables in Shaker
 
         function setupListeners() {
-
+/*
             if (typeof DeviceMotionEvent.requestPermission === 'function') {
                 DeviceMotionEvent.requestPermission().then(permissionState => {
                     if (permissionState === 'granted') {
@@ -405,6 +406,7 @@ THE SOFTWARE.
                     });
                 }
             } else {
+							*/
                 window.addEventListener('MozOrientation', function (e) {
                     measurements.x = e.x;
                     measurements.y = e.y;
@@ -442,14 +444,15 @@ THE SOFTWARE.
                     ];
                     ver = parseFloat(version.join('.'));
                     if (ver >= 13) {
-                        let str = "<button id='request-sensors-btn' style='position:fixed;top:5px;left:5px;font-size: 18px;z-index:10000;' >Enable Sensors</button>";
-                        document.body.innerHTML += str;
-                        document.getElementById("request-sensors-btn").onclick = requestSensors;
-                    }
-                }
+												let str = "<div id='request-sensors-container' style='position:absolute;z-index:15000;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,0.7);display:flex;justify-content:center;align-items:center;'><div id='request-sensors-btn' style='font-size: 18px;padding:10px 20px;border-radius:5px;background-color:pink;color:#40F;box-shadow:8px 8px 10px #000;cursor: default;' >Enable Sensors</div></div>";
+												document.body.innerHTML += str;
+												document.getElementById("request-sensors-btn").onclick = requestSensors;
+										}
+								}
+
 
             }, true);
-        }
+        //}
 
         setupListeners();
     }
